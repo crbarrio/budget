@@ -1,3 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+@layer components {
+    .card {
+        @apply px-4 py-6 rounded-xl border-2 border-transparent bg-white shadow-lg;
+    }
+
+    .card-header {
+        @apply font-bold text-xl mb-2;
+    }
+
+    .form-input {
+        @apply w-full rounded-lg border border-gray-300 px-3 py-2 text-slate-900 placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/15;
+    }
+
+    .form-input-invalid {
+        @apply w-full rounded-lg border border-red-500 bg-red-50 px-3 py-2 text-red-800 placeholder-red-600 focus:outline-none focus:border-red-600 focus:ring-4 focus:ring-red-500/15;
+    }
+}
