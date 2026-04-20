@@ -16,8 +16,14 @@
     <div class="self-center justify-self-end md:justify-self-auto">
         <label for="service-{{ service().id }}" class="inline-flex cursor-pointer items-center select-none">
             <span class="relative inline-flex items-center justify-center">
-                <input type="checkbox" name="service-{{ service().id }}" id="service-{{ service().id }}"
-                    class="peer sr-only" />
+                <input 
+                    type="checkbox" 
+                    name="service-{{ service().id }}" 
+                    id="service-{{ service().id }}"
+                    class="peer sr-only"
+                    
+                    (change)="onChangeService($event)"
+                 />
                 <span
                     class="h-5 w-5 rounded border border-gray-300 bg-white peer-checked:border-emerald-500 peer-checked:bg-emerald-500"></span>
                 <svg class="absolute h-3 w-3 text-white opacity-0 peer-checked:opacity-100" viewBox="0 0 20 20"

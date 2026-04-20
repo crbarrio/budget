@@ -9,7 +9,7 @@
         
             @for (service of services; track service.id) {
                 <app-card>
-                    <app-service-item [service]="service"></app-service-item>
+                    <app-service-item [service]="service" (serviceToggled)="toggleService($event)"></app-service-item>
                 </app-card>
             }
             
@@ -17,7 +17,7 @@
 
         <div class="text-right mt-6">
             <span class="mr-5 card-header">Preu pressupostat:</span>
-            <span class="text-3xl font-extrabold sm:text-4xl">500</span>
+            <span class="text-3xl font-extrabold sm:text-4xl">{{ total() }}</span>
             <span class="text-lg font-bold sm:text-xl"> €</span>
         </div>
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { BootstrapOptions, Component, signal, viewChild } from '@angular/core';
 import { Card } from "../../components/shared/card/card";
 import { ServiceItem } from "../../components/service-item/service-item";
 import { HeroHeader } from '../../components/hero-header/hero-header';
@@ -50,6 +50,40 @@ const budgetsMock: Budget[] = [
   templateUrl: './home.html',
 })
 export default class Home {
+
   services: ServiceElement[] = dbData.services;
   budgets: Budget[] = budgetsMock;
+
+  selectedServices: ServiceElement[] = [];
+  total = signal<number>(0);
+
+  recalculateTotal() {
+  this.total.set( this.selectedServices.reduce((sum, service) => {
+    let serviceTotal = service.price;
+
+    // if (service.subservices) {
+    //   serviceTotal += service.subservices.reduce((subSum, sub) => {
+    //     return subSum + (sub.price * (sub.quantity ?? 1));
+    //   }, 0);
+    // }
+
+    return sum + serviceTotal;
+  }, 0))
+}
+
+  toggleService(serviceChange: { id: number; checked: boolean }) {
+    if (serviceChange.checked) {
+      const service = this.services.find(service => service.id === serviceChange.id);
+      if (service && !this.selectedServices.some(s => s.id === service.id)) {
+        this.selectedServices.push(service);
+      }
+    } else {
+      this.selectedServices = this.selectedServices.filter(
+        service => service.id !== serviceChange.id
+      );
+    }
+
+    this.recalculateTotal();
+  }
+
 }
