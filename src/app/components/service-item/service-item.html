@@ -21,7 +21,6 @@
                     name="service-{{ service().id }}" 
                     id="service-{{ service().id }}"
                     class="peer sr-only"
-                    
                     (change)="onChangeService($event)"
                  />
                 <span
@@ -41,19 +40,20 @@
 <div class="mt-8 space-y-2 text-sm">
 
     @for (subservice of service().subservices; track subservice.id) {
-    <div class="flex items-center gap-6 flex-row-reverse">
+    <div class="items-center gap-6 flex-row-reverse" [class.hidden]="!isSelected()" [class.flex]="isSelected()">
         <div class="flex items-center gap-1">
             <button
-                class="w-4.5 h-4.5 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 cursor-pointer">
+                class="w-4.5 h-4.5 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 cursor-pointer"
+                (click)="updateSubservice(subservice.id, -1)">
                 <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round">
                     <path d="M5 12h14" />
                 </svg>
             </button>
-            <input type="text" value="1" min="1"
-                class="w-14 border border-gray-300 rounded-lg p-1.5 text-center font-bold" />
+            <input type="text" value="{{ subserviceQuantities[subservice.id] ?? 1 }}" min="1" class="w-14 border border-gray-300 rounded-lg p-1.5 text-center font-bold" />
             <button
-                class="w-4.5 h-4.5 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 cursor-pointer">
+                class="w-4.5 h-4.5 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 cursor-pointer"
+                (click)="updateSubservice(subservice.id, 1)">
                 <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round">
                     <path d="M12 5v14M5 12h14" />
@@ -72,5 +72,3 @@
     
 </div>
 }
-
-<!-- OPTIONS -->
