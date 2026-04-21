@@ -2,31 +2,19 @@
 <app-hero-header></app-hero-header>
 
 <main class="max-w-4xl mx-auto px-3">
-
-    <!-- SERVICES -->
     <section class="mt-10">
-
-        
-            @for (service of services; track service.id) {
-                <app-card>
-                    <app-service-item [service]="service"></app-service-item>
-                </app-card>
-            }
-            
-
-
+        @for (service of services; track service.id) {
+            <app-card>
+                <app-service-item [service]="service" (serviceToggled)="toggleService($event)"></app-service-item>
+            </app-card>
+        }
         <div class="text-right mt-6">
             <span class="mr-5 card-header">Preu pressupostat:</span>
-            <span class="text-3xl font-extrabold sm:text-4xl">500</span>
+            <span class="text-3xl font-extrabold sm:text-4xl">{{ total() }}</span>
             <span class="text-lg font-bold sm:text-xl"> €</span>
         </div>
-
     </section>
-
-    <!-- TOTAL -->
-
-
-    <!-- FORM -->
+    
     <section class="mt-10">
         <app-card>
             <h3 class="card-header">Solicitar presupuesto</h3>
@@ -36,11 +24,8 @@
 
     <hr class="mt-10 text-gray-300 border border-dashed">
 
-    <!-- LIST -->
     <section class="mt-10">
-
         <h3 class="card-header">Presupuestos en curso:</h3>
-
         <div class="flex items-center justify-end gap-5 text-sm font-semibold text-gray-500 mr-4 mb-4">
             <button type="button" class="text-gray-500 transition hover:text-gray-900 hover:cursor-pointer"
                 aria-label="Buscar">
@@ -61,7 +46,6 @@
             <button type="button" class="transition hover:text-gray-900 hover:cursor-pointer">Nombre</button>
         </div>
 
-
         <div class="space-y-4">
              @for (budget of budgets; track budget.id) {
                 <app-card>
@@ -70,5 +54,4 @@
             }
         </div>
     </section>
-
 </main>

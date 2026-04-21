@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { BootstrapOptions, Component, signal, viewChild } from '@angular/core';
 import { Card } from "../../components/shared/card/card";
 import { ServiceItem } from "../../components/service-item/service-item";
 import { HeroHeader } from '../../components/hero-header/hero-header';
@@ -49,7 +49,66 @@ const budgetsMock: Budget[] = [
   imports: [Card, ServiceItem, HeroHeader, BudgetForm, BudgetItem],
   templateUrl: './home.html',
 })
+
 export default class Home {
+
   services: ServiceElement[] = dbData.services;
   budgets: Budget[] = budgetsMock;
+
+  selectedServices: {
+    id: number;
+    price: number;
+    subservices?: {
+      id: number;
+      quantity: number;
+      price: number;
+    }[];
+  }[] = [];
+
+  total = signal<number>(0);
+
+  recalculateTotal() {
+    this.total.set(this.selectedServices.reduce((sum, service) => {
+      let serviceTotal = service.price;
+
+      if (service.subservices) {
+        serviceTotal += service.subservices.reduce((subSum, sub) => {
+          return subSum + (sub.price * (sub.quantity ?? 1));
+        }, 0);
+      }
+
+      return sum + serviceTotal;
+    }, 0))
+  }
+
+  toggleService(serviceChange: { id: number; checked: boolean; subservices: { id: number; quantity: number }[] }) {
+
+    if (serviceChange.checked) {
+      const service = this.services.find(service => service.id === serviceChange.id);
+
+      if (service) {
+        this.selectedServices = this.selectedServices.filter(
+          service => service.id !== serviceChange.id
+        );
+
+        this.selectedServices.push({
+          id: service.id,
+          price: service.price,
+          subservices: service.subservices?.map(sub => ({
+            id: sub.id,
+            quantity: serviceChange.subservices.find(s => s.id === sub.id)?.quantity ?? 1,
+            price: sub.price
+          }))
+        });
+      }
+
+    } else {
+      this.selectedServices = this.selectedServices.filter(
+        service => service.id !== serviceChange.id
+      );
+    }
+
+    this.recalculateTotal();
+  }
+
 }
