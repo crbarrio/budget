@@ -1,13 +1,13 @@
 import { Component, input, output, signal } from '@angular/core';
 import type { ServiceElement } from "../../interfaces/service.interface";
+import { SubserviceItem } from "./subservice-item/subservice-item";
 
 @Component({
   selector: 'app-service-item',
-  imports: [],
+  imports: [SubserviceItem],
   templateUrl: './service-item.html',
 })
 export class ServiceItem {
-
 
   service = input.required<ServiceElement>();
   isSelected = signal(false);
