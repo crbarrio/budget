@@ -3,7 +3,7 @@
 
 <main class="max-w-4xl mx-auto px-3">
     <section class="mt-10">
-        @for (service of services; track service.id) {
+        @for (service of budgetService.services; track service.id) {
             <app-card>
                 <app-service-item [service]="service" (serviceToggled)="toggleService($event)"></app-service-item>
             </app-card>
@@ -18,13 +18,13 @@
     <section class="mt-10">
         <app-card>
             <h3 class="card-header">Solicitar presupuesto</h3>
-            <app-budget-form></app-budget-form>
+            <app-budget-form (formSubmited)="buildBudget($event)" ></app-budget-form>
         </app-card>
     </section>
 
     <hr class="mt-10 text-gray-300 border border-dashed">
 
-    <section class="mt-10">
+    <section class="mt-10 mb-10">
         <h3 class="card-header">Presupuestos en curso:</h3>
         <div class="flex items-center justify-end gap-5 text-sm font-semibold text-gray-500 mr-4 mb-4">
             <button type="button" class="text-gray-500 transition hover:text-gray-900 hover:cursor-pointer"
@@ -47,7 +47,7 @@
         </div>
 
         <div class="space-y-4">
-             @for (budget of budgets; track budget.id) {
+             @for (budget of budgetService.budgetsMock; track budget.id) {
                 <app-card>
                     <app-budget-item [budget]="budget"></app-budget-item>
                 </app-card>

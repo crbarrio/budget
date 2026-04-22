@@ -1,48 +1,14 @@
-import { BootstrapOptions, Component, signal, viewChild } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Card } from "../../components/shared/card/card";
 import { ServiceItem } from "../../components/service-item/service-item";
 import { HeroHeader } from '../../components/hero-header/hero-header';
 import { BudgetForm } from "../../components/budget-form/budget-form";
 import { BudgetItem } from '../../components/budget-item/budget-item';
 
-import dbData from '../../../data/db.json';
-import type { ServiceElement } from "../../interfaces/service.interface";
 import { Budget } from '../../interfaces/budget.interface';
+import { BudgetFormData } from '../../interfaces/budget-form.interface';
+import { BudgetService } from '../../services/budget.service';
 
-const budgetsMock: Budget[] = [
-  {
-    id: 1,
-    name: "Carlos Ramirez",
-    email: "carlos.ramirez@example.com",
-    telephone: "+34 123 123 123",
-    services: [
-      {
-        id: 1,
-        price: 300,
-        name: "Web",
-        subservices: [
-          {
-            id: 1,
-            quantity: 2,
-            price: 30,
-            name: "Páginas",
-          },
-          {
-            id: 2,
-            quantity: 1,
-            price: 30,
-            name: "Idiomas",
-          }
-        ]
-      },
-      {
-        id: 2,
-        price: 200,
-        name: "Seo",
-      },
-    ],
-  }
-]
 
 @Component({
   selector: 'app-home',
@@ -52,8 +18,7 @@ const budgetsMock: Budget[] = [
 
 export default class Home {
 
-  services: ServiceElement[] = dbData.services;
-  budgets: Budget[] = budgetsMock;
+  budgetService = inject(BudgetService);
 
   selectedServices: {
     id: number;
@@ -84,7 +49,7 @@ export default class Home {
   toggleService(serviceChange: { id: number; checked: boolean; subservices: { id: number; quantity: number }[] }) {
 
     if (serviceChange.checked) {
-      const service = this.services.find(service => service.id === serviceChange.id);
+      const service = this.budgetService.services.find(service => service.id === serviceChange.id);
 
       if (service) {
         this.selectedServices = this.selectedServices.filter(
@@ -108,6 +73,33 @@ export default class Home {
       );
     }
 
+    this.recalculateTotal();
+  }
+
+  buildBudget(formData: { name: string; telephone: string; email: string }) {
+    const budget: Budget = {
+      id: Date.now(),
+      ...formData,
+      services: this.selectedServices.map((selected) => {
+        const service = this.budgetService.services.find((item) => item.id === selected.id)!;
+
+        return {
+          id: service.id,
+          name: service.name,
+          price: service.price,
+          subservices: service.subservices?.map((sub) => ({
+            id: sub.id,
+            name: sub.name,
+            price: sub.price,
+            quantity:
+              selected.subservices?.find((item) => item.id === sub.id)?.quantity ?? 1,
+          })),
+        };
+      }),
+    };
+
+    this.budgetService.saveBudget(budget);
+    this.selectedServices = [];
     this.recalculateTotal();
   }
 
