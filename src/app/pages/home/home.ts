@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { Card } from "../../components/shared/card/card";
 import { ServiceItem } from "../../components/service-item/service-item";
 import { HeroHeader } from '../../components/hero-header/hero-header';
@@ -6,7 +6,6 @@ import { BudgetForm } from "../../components/budget-form/budget-form";
 import { BudgetItem } from '../../components/budget-item/budget-item';
 
 import { Budget } from '../../interfaces/budget.interface';
-import { BudgetFormData } from '../../interfaces/budget-form.interface';
 import { BudgetService } from '../../services/budget.service';
 
 
@@ -19,6 +18,7 @@ import { BudgetService } from '../../services/budget.service';
 export default class Home {
 
   budgetService = inject(BudgetService);
+  budgetForm = viewChild(BudgetForm);
 
   selectedServices: {
     id: number;
@@ -76,7 +76,13 @@ export default class Home {
     this.recalculateTotal();
   }
 
-  buildBudget(formData: { name: string; telephone: string; email: string }) {
+  async buildBudget(formData: { name: string; telephone: string; email: string }) {
+
+    if (this.selectedServices.length === 0) {
+      alert('Por favor, selecciona al menos un servicio para generar el presupuesto.');
+      return;
+    }
+
     const budget: Budget = {
       id: Date.now(),
       ...formData,
@@ -98,9 +104,18 @@ export default class Home {
       }),
     };
 
-    this.budgetService.saveBudget(budget);
-    this.selectedServices = [];
-    this.recalculateTotal();
+    try {
+      await this.budgetService.saveBudget(budget);
+
+      alert('Presupuesto guardado con éxito');
+      this.selectedServices = [];
+      this.recalculateTotal();
+      this.budgetForm()?.onReset();
+    } catch (error) {
+
+      alert('Error al guardar el presupuesto. Inténtalo de nuevo.');
+      console.error(error);
+    }
   }
 
 }
