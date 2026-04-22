@@ -1,11 +1,15 @@
 <!-- HEADER -->
 <app-hero-header></app-hero-header>
 
+
 <main class="max-w-4xl mx-auto px-3">
     <section class="mt-10">
-        @for (service of budgetService.services; track service.id) {
+        @for (service of services; track service.id) {
             <app-card>
-                <app-service-item [service]="service" (serviceToggled)="toggleService($event)"></app-service-item>
+                <app-service-item 
+                    [service]="service" 
+                    (serviceToggled)="toggleService($event)">
+                </app-service-item>
             </app-card>
         }
         <div class="text-right mt-6">

@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+
 import { Card } from "../../components/shared/card/card";
 import { ServiceItem } from "../../components/service-item/service-item";
 import { HeroHeader } from '../../components/hero-header/hero-header';
@@ -6,9 +7,11 @@ import { BudgetForm } from "../../components/budget-form/budget-form";
 import { BudgetItem } from '../../components/budget-item/budget-item';
 
 import { Budget } from '../../interfaces/budget.interface';
-import { BudgetFormData } from '../../interfaces/budget-form.interface';
-import { BudgetService } from '../../services/budget.service';
 
+import { SelectedService } from '../../interfaces/service.interface';
+import { BudgetService } from '../../services/budget.service';
+import { modalContent as modalCatalog, services } from '../../text/text';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-home',
@@ -17,20 +20,14 @@ import { BudgetService } from '../../services/budget.service';
 })
 
 export default class Home {
-
+  readonly services = services;
+  readonly modalContent = modalCatalog;
   budgetService = inject(BudgetService);
+  modalService = inject(ModalService);
 
-  selectedServices: {
-    id: number;
-    price: number;
-    subservices?: {
-      id: number;
-      quantity: number;
-      price: number;
-    }[];
-  }[] = [];
-
+  selectedServices: SelectedService[] = [];
   total = signal<number>(0);
+
 
   recalculateTotal() {
     this.total.set(this.selectedServices.reduce((sum, service) => {
@@ -43,13 +40,12 @@ export default class Home {
       }
 
       return sum + serviceTotal;
-    }, 0))
+    }, 0));
   }
 
   toggleService(serviceChange: { id: number; checked: boolean; subservices: { id: number; quantity: number }[] }) {
-
     if (serviceChange.checked) {
-      const service = this.budgetService.services.find(service => service.id === serviceChange.id);
+      const service = this.services.find(service => service.id === serviceChange.id);
 
       if (service) {
         this.selectedServices = this.selectedServices.filter(
@@ -66,7 +62,6 @@ export default class Home {
           }))
         });
       }
-
     } else {
       this.selectedServices = this.selectedServices.filter(
         service => service.id !== serviceChange.id
@@ -81,7 +76,7 @@ export default class Home {
       id: Date.now(),
       ...formData,
       services: this.selectedServices.map((selected) => {
-        const service = this.budgetService.services.find((item) => item.id === selected.id)!;
+        const service = this.services.find((item) => item.id === selected.id)!;
 
         return {
           id: service.id,
@@ -101,6 +96,6 @@ export default class Home {
     this.budgetService.saveBudget(budget);
     this.selectedServices = [];
     this.recalculateTotal();
+    this.modalService.openModal(this.modalContent.budgetSavedSuccess);
   }
-
 }

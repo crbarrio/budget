@@ -11,3 +11,13 @@ export interface ServiceElement {
     price:        number;
     subservices?: ServiceElement[];
 }
+
+export interface SelectedService {
+    id: number;
+    price: number;
+    subservices?: {
+        id: number;
+        quantity: number;
+        price: number;
+    }[];
+}
