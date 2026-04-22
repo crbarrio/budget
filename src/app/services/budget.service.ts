@@ -44,8 +44,22 @@ export class BudgetService {
     }
   ]
 
-  async saveBudget(budget: Budget) {
-    this.budgetsMock.push(budget)
+  async saveBudget(budget: Budget): Promise<void> {
+
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+
+        const shouldFail = Math.random() < 0.3;
+
+        if (shouldFail) {
+          reject(new Error('Error al guardar el presupuesto. Inténtalo de nuevo.'));
+          return;
+        }
+
+        this.budgetsMock.push(budget)
+        resolve(true);
+      }, 1000);
+    });
   }
 
 }

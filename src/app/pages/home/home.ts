@@ -1,5 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
-
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { Card } from "../../components/shared/card/card";
 import { ServiceItem } from "../../components/service-item/service-item";
 import { HeroHeader } from '../../components/hero-header/hero-header';
@@ -23,9 +22,11 @@ export default class Home {
   readonly services = services;
   readonly modalContent = modalCatalog;
   budgetService = inject(BudgetService);
+  
+  budgetForm = viewChild(BudgetForm);
+  selectedServices: SelectedService[] = [];
   modalService = inject(ModalService);
 
-  selectedServices: SelectedService[] = [];
   total = signal<number>(0);
 
 
@@ -71,7 +72,13 @@ export default class Home {
     this.recalculateTotal();
   }
 
-  buildBudget(formData: { name: string; telephone: string; email: string }) {
+  async buildBudget(formData: { name: string; telephone: string; email: string }) {
+
+    if (this.selectedServices.length === 0) {
+      alert('Por favor, selecciona al menos un servicio para generar el presupuesto.');
+      return;
+    }
+
     const budget: Budget = {
       id: Date.now(),
       ...formData,
@@ -93,9 +100,19 @@ export default class Home {
       }),
     };
 
-    this.budgetService.saveBudget(budget);
-    this.selectedServices = [];
-    this.recalculateTotal();
-    this.modalService.openModal(this.modalContent.budgetSavedSuccess);
+    
+
+    try {
+      await this.budgetService.saveBudget(budget);
+      
+      this.modalService.openModal(this.modalContent.budgetSavedSuccess);
+      this.selectedServices = [];
+      this.recalculateTotal();
+      this.budgetForm()?.onReset();
+    } catch (error) {
+
+      this.modalService.openModal(this.modalContent.budgetSavedError);
+      console.error(error);
+    }
   }
 }
