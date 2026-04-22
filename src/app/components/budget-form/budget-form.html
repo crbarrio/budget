@@ -1,12 +1,40 @@
-<form class="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
+<form class="grid gap-3 sm:grid-cols-2 md:grid-cols-4" (submit)="onSubmit($event)" novalidate>
+    <div>
+        <input type="text" placeholder="Nombre" [class.form-input-invalid]="isFieldInvalid('name')" class="form-input" [formField]="budgetForm.name" />
+        @if ( isFieldInvalid('name')) {
+            <p class="text-red-500 text-sm">
+                @for (error of budgetForm.name().errors(); track $index) {
+                    {{ error.message }}
+                }
+            </p>
+        }
+    </div>
+    
+    <div>
+        <input type="text" placeholder="Teléfono" [class.form-input-invalid]="isFieldInvalid('telephone')" class="form-input" [formField]="budgetForm.telephone"/>
+        @if ( isFieldInvalid('telephone')) {
+            <p class="text-red-500 text-sm">
+                @for (error of budgetForm.telephone().errors(); track $index) {
+                    {{ error.message }}
+                }
+            </p>
+        }
+    </div>
 
-    <input type="text" placeholder="Nombre" class="form-input" />
-
-    <input type="text" placeholder="Teléfono" class="form-input" />
-
-    <input type="email" placeholder="Email" class="form-input-invalid" />
-
-    <button class="bg-emerald-500 text-white rounded-lg px-4 py-2 hover:bg-emerald-600 transition">
-        Solicitar presupuesto →
-    </button>
+    <div>
+        <input type="text" placeholder="Email" [class.form-input-invalid]="isFieldInvalid('email')" class="form-input" [formField]="budgetForm.email"/>
+        @if ( isFieldInvalid('email')) {
+            <p class="text-red-500 text-sm">
+                @for (error of budgetForm.email().errors(); track $index) {
+                    {{ error.message }}
+                }
+            </p>
+        }
+    </div>
+    <div>
+        <button class="bg-emerald-500 text-white rounded-lg px-4 py-2 hover:bg-emerald-600 transition w-full">
+            Solicitar presupuesto →
+        </button>
+    </div>
+    
 </form>

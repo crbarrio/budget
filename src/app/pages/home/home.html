@@ -18,7 +18,7 @@
     <section class="mt-10">
         <app-card>
             <h3 class="card-header">Solicitar presupuesto</h3>
-            <app-budget-form></app-budget-form>
+            <app-budget-form (formSubmited)="saveBudget($event)" ></app-budget-form>
         </app-card>
     </section>
 

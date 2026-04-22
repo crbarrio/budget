@@ -8,6 +8,7 @@ import { BudgetItem } from '../../components/budget-item/budget-item';
 import dbData from '../../../data/db.json';
 import type { ServiceElement } from "../../interfaces/service.interface";
 import { Budget } from '../../interfaces/budget.interface';
+import { BudgetFormData } from '../../interfaces/budget-form.interface';
 
 const budgetsMock: Budget[] = [
   {
@@ -110,5 +111,30 @@ export default class Home {
 
     this.recalculateTotal();
   }
+
+  saveBudget(formData: { name: string; telephone: string; email: string }) {
+  const budget: Budget = {
+    id: Date.now(),
+    ...formData,
+    services: this.selectedServices.map((selected) => {
+      const service = this.services.find((item) => item.id === selected.id)!;
+
+      return {
+        id: service.id,
+        name: service.name,
+        price: service.price,
+        subservices: service.subservices?.map((sub) => ({
+          id: sub.id,
+          name: sub.name,
+          price: sub.price,
+          quantity:
+            selected.subservices?.find((item) => item.id === sub.id)?.quantity ?? 1,
+        })),
+      };
+    }),
+  };
+
+  // aquí harías el POST a la API
+}
 
 }
