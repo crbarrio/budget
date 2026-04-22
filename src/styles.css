@@ -4,7 +4,7 @@
 
 @layer components {
     .card {
-        @apply mt-4 px-4 py-6 rounded-xl border-2 border-transparent bg-white shadow-lg;
+        @apply mx-2 md:mx-0 mt-4 px-4 py-6 rounded-xl border-2 border-transparent bg-white shadow-lg;
     }
 
     .card-header {

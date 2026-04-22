@@ -1,0 +1,38 @@
+<div class="relative min-h-44 rounded-xl bg-white px-4 py-6 shadow-lg md:px-8 md:py-8">
+    <button
+        type="button"
+        class="absolute top-4 right-4 inline-flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 md:top-6 md:right-6"
+        aria-label="Cerrar modal"
+        (click)="modalService.closeModal()"
+    >
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6 6 18" />
+        </svg>
+    </button>
+
+    <div class="flex min-h-32 items-center gap-4 pr-10 md:pr-12">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gray-50">
+            @if (variant === 'success') {
+                <svg class="h-7 w-7 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5" />
+                </svg>
+            }
+            @if (variant === 'error') {
+                <svg class="h-7 w-7 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6 6 18" />
+                </svg>
+            }
+            @if (variant === 'info') {
+                <svg class="h-7 w-7 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                </svg>
+            }
+        </div>
+
+        <div class="min-w-0 flex-1">
+            <h3 class="text-lg font-medium leading-6 text-gray-900">{{ title }}</h3>
+            <p class="mt-1 text-sm leading-6 text-gray-500">{{ message }}</p>
+        </div>
+    </div>
+</div>
+

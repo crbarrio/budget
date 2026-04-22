@@ -6,8 +6,11 @@ import { BudgetForm } from "../../components/budget-form/budget-form";
 import { BudgetItem } from '../../components/budget-item/budget-item';
 
 import { Budget } from '../../interfaces/budget.interface';
-import { BudgetService } from '../../services/budget.service';
 
+import { SelectedService } from '../../interfaces/service.interface';
+import { BudgetService } from '../../services/budget.service';
+import { modalContent as modalCatalog, services } from '../../text/text';
+import { ModalService } from '../../services/modal.service';
 
 @Component({
   selector: 'app-home',
@@ -16,21 +19,16 @@ import { BudgetService } from '../../services/budget.service';
 })
 
 export default class Home {
-
+  readonly services = services;
+  readonly modalContent = modalCatalog;
   budgetService = inject(BudgetService);
+  
   budgetForm = viewChild(BudgetForm);
-
-  selectedServices: {
-    id: number;
-    price: number;
-    subservices?: {
-      id: number;
-      quantity: number;
-      price: number;
-    }[];
-  }[] = [];
+  selectedServices: SelectedService[] = [];
+  modalService = inject(ModalService);
 
   total = signal<number>(0);
+
 
   recalculateTotal() {
     this.total.set(this.selectedServices.reduce((sum, service) => {
@@ -43,13 +41,12 @@ export default class Home {
       }
 
       return sum + serviceTotal;
-    }, 0))
+    }, 0));
   }
 
   toggleService(serviceChange: { id: number; checked: boolean; subservices: { id: number; quantity: number }[] }) {
-
     if (serviceChange.checked) {
-      const service = this.budgetService.services.find(service => service.id === serviceChange.id);
+      const service = this.services.find(service => service.id === serviceChange.id);
 
       if (service) {
         this.selectedServices = this.selectedServices.filter(
@@ -66,7 +63,6 @@ export default class Home {
           }))
         });
       }
-
     } else {
       this.selectedServices = this.selectedServices.filter(
         service => service.id !== serviceChange.id
@@ -87,7 +83,7 @@ export default class Home {
       id: Date.now(),
       ...formData,
       services: this.selectedServices.map((selected) => {
-        const service = this.budgetService.services.find((item) => item.id === selected.id)!;
+        const service = this.services.find((item) => item.id === selected.id)!;
 
         return {
           id: service.id,
@@ -104,18 +100,19 @@ export default class Home {
       }),
     };
 
+    
+
     try {
       await this.budgetService.saveBudget(budget);
-
-      alert('Presupuesto guardado con éxito');
+      
+      this.modalService.openModal(this.modalContent.budgetSavedSuccess);
       this.selectedServices = [];
       this.recalculateTotal();
       this.budgetForm()?.onReset();
     } catch (error) {
 
-      alert('Error al guardar el presupuesto. Inténtalo de nuevo.');
+      this.modalService.openModal(this.modalContent.budgetSavedError);
       console.error(error);
     }
   }
-
 }
