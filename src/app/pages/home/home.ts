@@ -5,12 +5,13 @@ import { HeroHeader } from '../../components/hero-header/hero-header';
 import { BudgetForm } from "../../components/budget-form/budget-form";
 import { BudgetItem } from '../../components/budget-item/budget-item';
 
-import { Budget } from '../../interfaces/budget.interface';
+import { Budget, BudgetOrderBy, BudgetOrderDirection } from '../../interfaces/budget.interface';
 
 import { SelectedService } from '../../interfaces/service.interface';
 import { BudgetService } from '../../services/budget.service';
 import { modalContent as modalCatalog, services } from '../../text/text';
 import { ModalService } from '../../services/modal.service';
+
 
 @Component({
   selector: 'app-home',
@@ -22,13 +23,25 @@ export default class Home {
   readonly services = services;
   readonly modalContent = modalCatalog;
   budgetService = inject(BudgetService);
+  readonly defaultBudgetOrderDirections: Record<BudgetOrderBy, BudgetOrderDirection> = {
+    date: 'desc',
+    name: 'asc',
+    total: 'desc',
+  };
+  currentBudgetOrderBy: BudgetOrderBy = 'date';
+  currentBudgetOrderDirection: BudgetOrderDirection = 'desc';
+
+  budgetsListOrderOptions: { value: BudgetOrderBy; label: string }[] = [
+    { value: 'date', label: 'Fecha' },
+    { value: 'name', label: 'Nombre' },
+    { value: 'total', label: 'Importe' },
+  ];
   
   budgetForm = viewChild(BudgetForm);
   selectedServices: SelectedService[] = [];
   modalService = inject(ModalService);
 
   total = signal<number>(0);
-
 
   recalculateTotal() {
     this.total.set(this.selectedServices.reduce((sum, service) => {
@@ -72,6 +85,32 @@ export default class Home {
     this.recalculateTotal();
   }
 
+  orderBudgets(orderBy: BudgetOrderBy) {
+    const direction = this.currentBudgetOrderBy === orderBy
+      ? this.getNextBudgetOrderDirection(this.currentBudgetOrderDirection)
+      : this.defaultBudgetOrderDirections[orderBy];
+
+    this.currentBudgetOrderBy = orderBy;
+    this.currentBudgetOrderDirection = direction;
+    this.budgetService.setOrderBy(orderBy, direction);
+  }
+
+  getBudgetOrderDirectionLabel(orderBy: BudgetOrderBy) {
+    if (this.currentBudgetOrderBy !== orderBy) {
+      return '';
+    }
+
+    return this.currentBudgetOrderDirection === 'asc' ? '↑' : '↓';
+  }
+
+  isActiveOrder(orderBy: BudgetOrderBy) {
+    return this.currentBudgetOrderBy === orderBy;
+  }
+
+  private getNextBudgetOrderDirection(direction: BudgetOrderDirection): BudgetOrderDirection {
+    return direction === 'asc' ? 'desc' : 'asc';
+  }
+
   async buildBudget(formData: { name: string; telephone: string; email: string }) {
 
     if (this.selectedServices.length === 0) {
@@ -80,7 +119,7 @@ export default class Home {
     }
 
     const budget: Budget = {
-      id: Date.now(),
+      id: new Date(),
       ...formData,
       services: this.selectedServices.map((selected) => {
         const service = this.services.find((item) => item.id === selected.id)!;
@@ -98,9 +137,8 @@ export default class Home {
           })),
         };
       }),
+      total: this.total()
     };
-
-    
 
     try {
       await this.budgetService.saveBudget(budget);

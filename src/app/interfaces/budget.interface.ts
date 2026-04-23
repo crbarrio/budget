@@ -1,9 +1,19 @@
+export type BudgetOrderBy = 'date' | 'name' | 'total';
+
+export type BudgetOrderDirection = 'asc' | 'desc';
+
+export interface BudgetSort {
+    orderBy: BudgetOrderBy;
+    direction: BudgetOrderDirection;
+}
+
 export interface Budget {
-    id: number;
+    id: Date;
     name: string;
     telephone: string;
     email: string;
     services: Service[];
+    total: number;
 }
 
 interface Service {

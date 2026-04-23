@@ -3,10 +3,11 @@
         <p class="card-header">{{ budget().name }}</p>
         <p class="text-sm text-gray-500">{{ budget().email }}</p>
         <p class="text-sm text-gray-500">{{ budget().telephone }}</p>
+        <p class="text-sm text-gray-500">{{ `${budget().id.getDate()}/${budget().id.getMonth() + 1}/${budget().id.getFullYear()}` }}</p>
     </div>
 
     <div class="text-sm">
-        <p class="font-medium mb-2">Serveis contractats:</p>
+        <p class="font-medium mb-2">Servicios contratados:</p>
         <ul class="list-disc ml-5 ">
             @for (service of budget().services; track service.id) {
             <li>
@@ -25,7 +26,7 @@
 
     <div class="text-right">
         <p class="mr-4 text-gray-500">Total:</p>
-        <span class="text-3xl font-extrabold sm:text-4xl">500</span>
+        <span class="text-3xl font-extrabold sm:text-4xl">{{ budget().total }}</span>
         <span class="text-lg font-bold sm:text-xl"> €</span>
     </div>
 </div>
