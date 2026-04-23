@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Budget } from '../interfaces/budget.interface';
+import { Budget, BudgetOrderBy, BudgetOrderDirection } from '../interfaces/budget.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BudgetService {
 
-
-
-
   budgetsMock: Budget[] = [
     {
-      id: 1,
+      id: new Date(),
       name: "Carlos Ramirez",
       email: "carlos.ramirez@example.com",
       telephone: "+34 123 123 123",
@@ -41,11 +38,11 @@ export class BudgetService {
           name: "Seo",
         },
       ],
+      total: 560
     }
   ]
 
   async saveBudget(budget: Budget): Promise<void> {
-
     await new Promise((resolve, reject) => {
       setTimeout(() => {
 
@@ -62,4 +59,15 @@ export class BudgetService {
     });
   }
 
+  setOrderBy(orderBy: BudgetOrderBy, direction: BudgetOrderDirection = 'asc') {
+    const sorters: Record<BudgetOrderBy, (current: Budget, next: Budget) => number> = {
+      date: (current, next) => current.id.getTime() - next.id.getTime(),
+      name: (current, next) => current.name.localeCompare(next.name, 'es', { sensitivity: 'base' }),
+      total: (current, next) => current.total - next.total,
+    };
+
+    const directionMultiplier = direction === 'asc' ? 1 : -1;
+
+    this.budgetsMock.sort((current, next) => sorters[orderBy](current, next) * directionMultiplier);
+  }
 }
