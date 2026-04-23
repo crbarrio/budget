@@ -5,55 +5,29 @@ import { Budget, BudgetOrderBy, BudgetOrderDirection } from '../interfaces/budge
   providedIn: 'root',
 })
 export class BudgetService {
+  private readonly storageKey = 'budgets';
 
-  budgetsMock: Budget[] = [
-    {
-      id: new Date(),
-      name: "Carlos Ramirez",
-      email: "carlos.ramirez@example.com",
-      telephone: "+34 123 123 123",
-      services: [
-        {
-          id: 1,
-          price: 300,
-          name: "Web",
-          subservices: [
-            {
-              id: 1,
-              quantity: 2,
-              price: 30,
-              name: "Páginas",
-            },
-            {
-              id: 2,
-              quantity: 1,
-              price: 30,
-              name: "Idiomas",
-            }
-          ]
-        },
-        {
-          id: 2,
-          price: 200,
-          name: "Seo",
-        },
-      ],
-      total: 560
+  budgetArray: Budget[] = this.loadBudgets();
+
+  private loadBudgets(): Budget[] {
+    const storedBudgets = localStorage.getItem(this.storageKey);
+
+    if (!storedBudgets) {
+      return [];
     }
-  ]
+
+    return JSON.parse(storedBudgets) as Budget[];
+  }
+
+  private persistBudgets() {
+    localStorage.setItem(this.storageKey, JSON.stringify(this.budgetArray));
+  }
 
   async saveBudget(budget: Budget): Promise<void> {
-    await new Promise((resolve, reject) => {
+    await new Promise((resolve) => {
       setTimeout(() => {
-
-        const shouldFail = Math.random() < 0.3;
-
-        if (shouldFail) {
-          reject(new Error('Error al guardar el presupuesto. Inténtalo de nuevo.'));
-          return;
-        }
-
-        this.budgetsMock.push(budget)
+        this.budgetArray.push(budget);
+        this.persistBudgets();
         resolve(true);
       }, 1000);
     });
@@ -61,13 +35,13 @@ export class BudgetService {
 
   setOrderBy(orderBy: BudgetOrderBy, direction: BudgetOrderDirection = 'asc') {
     const sorters: Record<BudgetOrderBy, (current: Budget, next: Budget) => number> = {
-      date: (current, next) => current.id.getTime() - next.id.getTime(),
+      date: (current, next) => current.createdAt.localeCompare(next.createdAt),
       name: (current, next) => current.name.localeCompare(next.name, 'es', { sensitivity: 'base' }),
       total: (current, next) => current.total - next.total,
     };
 
     const directionMultiplier = direction === 'asc' ? 1 : -1;
 
-    this.budgetsMock.sort((current, next) => sorters[orderBy](current, next) * directionMultiplier);
+    this.budgetArray.sort((current, next) => sorters[orderBy](current, next) * directionMultiplier);
   }
 }

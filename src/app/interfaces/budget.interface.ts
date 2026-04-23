@@ -8,7 +8,7 @@ export interface BudgetSort {
 }
 
 export interface Budget {
-    id: Date;
+    createdAt: string;
     name: string;
     telephone: string;
     email: string;

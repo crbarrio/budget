@@ -37,7 +37,7 @@ export const services: ServiceElement[] = [
     }
 ]
 
-export const modalContent = {
+export const modalAlertContent = {
   budgetSavedSuccess: {
     variant: 'success',
     title: 'Presupuesto enviado',
@@ -47,6 +47,11 @@ export const modalContent = {
     variant: 'error',
     title: 'Error al guardar',
     message: 'Se ha producido un error al guardar tu presupuesto. Por favor, inténtalo de nuevo más tarde.',
+  },
+  noServicesSelected: {
+    variant: 'error',
+    title: 'No hay servicios seleccionados',
+    message: 'Por favor, selecciona al menos un servicio para generar el presupuesto.',
   }
 } as const;
 

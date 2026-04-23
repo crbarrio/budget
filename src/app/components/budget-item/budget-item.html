@@ -1,9 +1,10 @@
-<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+<div class="card flex flex-col md:flex-row md:justify-between md:items-center gap-4 hover:cursor-pointer hover:bg-gray-50 transition p-4 rounded-lg"
+    [routerLink]="">
     <div>
         <p class="card-header">{{ budget().name }}</p>
         <p class="text-sm text-gray-500">{{ budget().email }}</p>
         <p class="text-sm text-gray-500">{{ budget().telephone }}</p>
-        <p class="text-sm text-gray-500">{{ `${budget().id.getDate()}/${budget().id.getMonth() + 1}/${budget().id.getFullYear()}` }}</p>
+        <p class="text-sm text-gray-500">{{ budget().createdAt | date:'d/M/yyyy' }}</p>
     </div>
 
     <div class="text-sm">

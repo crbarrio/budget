@@ -36,15 +36,26 @@
 
 </div>
 
-@if ( service().subservices ) {
-<div class="mt-8 space-y-2 text-sm" [class.hidden]="!isSelected()">
-
-    @for (subservice of service().subservices; track subservice.id) {
-        <app-subservice-item 
-            [subservice]="subservice" [quantity]="subserviceQuantities[subservice.id] ?? 1"
+@if (service().subservices) {
+  <div
+    class="grid overflow-hidden text-sm transition-all duration-300 ease-out"
+    [class.grid-rows-[1fr]]="isSelected()"
+    [class.grid-rows-[0fr]]="!isSelected()"
+    [class.opacity-100]="isSelected()"
+    [class.opacity-0]="!isSelected()"
+    [class.pointer-events-none]="!isSelected()"
+  >
+    <div class="min-h-0">
+      <div class="space-y-2 pt-8">
+        @for (subservice of service().subservices; track subservice.id) {
+          <app-subservice-item
+            [subservice]="subservice"
+            [quantity]="subserviceQuantities[subservice.id] ?? 1"
             (quantityChanged)="updateSubservice(subservice.id, $event)"
-        ></app-subservice-item>
-    }
-    
-</div>
+          ></app-subservice-item>
+        }
+      </div>
+    </div>
+  </div>
+
 }
