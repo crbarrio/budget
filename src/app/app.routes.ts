@@ -7,7 +7,7 @@ export const routes: Routes = [
 
         children: [
             {
-                path: 'budget',
+                path: 'budget/:budgetId',
                 loadComponent: () => import('./pages/budget-details/budget-details')
             },
             {

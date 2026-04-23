@@ -1,33 +1,36 @@
-<div class="card flex flex-col md:flex-row md:justify-between md:items-center gap-4 hover:cursor-pointer hover:bg-gray-50 transition p-4 rounded-lg"
-    [routerLink]="">
-    <div>
-        <p class="card-header">{{ budget().name }}</p>
-        <p class="text-sm text-gray-500">{{ budget().email }}</p>
-        <p class="text-sm text-gray-500">{{ budget().telephone }}</p>
-        <p class="text-sm text-gray-500">{{ budget().createdAt | date:'d/M/yyyy' }}</p>
-    </div>
+<div class="card flex flex-col md:flex-row md:justify-between md:items-center gap-4 p-4 rounded-lg">
+    @if (budget()) {
+        <div>
+            <p class="card-header">{{ budget()!.name }}</p>
+            <p class="text-sm text-gray-500">{{ budget()!.email }}</p>
+            <p class="text-sm text-gray-500">{{ budget()!.telephone }}</p>
+            <p class="text-sm text-gray-500">{{ budget()!.createdAt | date:'d/M/yyyy' }}</p>
+        </div>
 
-    <div class="text-sm">
-        <p class="font-medium mb-2">Servicios contratados:</p>
-        <ul class="list-disc ml-5 ">
-            @for (service of budget().services; track service.id) {
-            <li>
-                {{ service.name }}
-                @if (service.subservices) {
-                    (
-                    @for (subservice of service.subservices; track subservice.id; let last = $last) {
-                        {{ subservice.name }}: {{ subservice.quantity }} @if (!last) {, }
+        <div class="text-sm">
+            <p class="font-medium mb-2">Servicios contratados:</p>
+            <ul class="list-disc ml-5 ">
+                @for (service of budget()!.services; track service.id) {
+                <li>
+                    {{ service.name }}
+                    @if (service.subservices) {
+                        (
+                        @for (subservice of service.subservices; track subservice.id; let last = $last) {
+                            {{ subservice.name }}: {{ subservice.quantity }} @if (!last) {, }
+                        }
+                        )
                     }
-                    )
+                </li>
                 }
-            </li>
-            }
-        </ul>
-    </div>
+            </ul>
+        </div>
 
-    <div class="text-right">
-        <p class="mr-4 text-gray-500">Total:</p>
-        <span class="text-3xl font-extrabold sm:text-4xl">{{ budget().total }}</span>
-        <span class="text-lg font-bold sm:text-xl"> €</span>
-    </div>
+        <div class="text-right">
+            <p class="mr-4 text-gray-500">Total:</p>
+            <span class="text-3xl font-extrabold sm:text-4xl">{{ budget()!.total }}</span>
+            <span class="text-lg font-bold sm:text-xl"> €</span>
+        </div>
+    } @else {
+        <p class="text-gray-500 text-center py-10">Presupuesto no encontrado.</p>
+    }
 </div>

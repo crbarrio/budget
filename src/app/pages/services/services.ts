@@ -11,10 +11,11 @@ import { BudgetService } from '../../services/budget.service';
 import { modalAlertContent as modalCatalog, services } from '../../text/text';
 import { ModalService } from '../../services/modal.service';
 import { HeroHeader } from "../../components/hero-header/hero-header";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-services',
-  imports: [Card, ServiceItem, BudgetForm, BudgetItem, HeroHeader],
+  imports: [Card, ServiceItem, BudgetForm, BudgetItem, HeroHeader, RouterLink],
   templateUrl: './services.html',
 })
 export default class Services {

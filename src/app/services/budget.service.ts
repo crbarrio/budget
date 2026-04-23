@@ -44,4 +44,13 @@ export class BudgetService {
 
     this.budgetArray.sort((current, next) => sorters[orderBy](current, next) * directionMultiplier);
   }
+
+  getBudgetById(id: string): Budget | null {
+
+    const budget = this.budgetArray.find(budget => budget.createdAt === id);
+    if (!budget) {
+      return null;
+    }
+    return budget;
+  }
 }

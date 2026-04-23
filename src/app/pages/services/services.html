@@ -8,7 +8,7 @@
     }
     <div class="text-right mt-6">
         <span class="mr-5 card-header">Preu pressupostat:</span>
-        <span class="text-3xl font-extrabold sm:text-4xl">{{ total() }}</span>
+        <span class="text-3xl font-extrabold sm:text-4xl" aria-live="polite">{{ total() }}</span>
         <span class="text-lg font-bold sm:text-xl"> €</span>
     </div>
 </section>
@@ -33,14 +33,25 @@
                     d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
             </svg>
         </button>
-        @for (item of budgetsListOrderOptions; track item.value) {
-        <button (click)="orderBudgets(item.value)" type="button" [class.text-gray-900]="isActiveOrder(item.value)"
-            class="inline-flex items-center gap-1 transition hover:text-gray-900 hover:cursor-pointer">
-            {{ item.label }}
-            <span class="inline-block w-3 text-center" [class.invisible]="!isActiveOrder(item.value)">{{
-                getBudgetOrderDirectionLabel(item.value) }}</span>
-        </button>
-        }
+        <div aria-label="Ordenar presupuestos" role="group">
+            @for (item of budgetsListOrderOptions; track item.value) {
+            <button (click)="orderBudgets(item.value)" type="button" [class.text-gray-900]="isActiveOrder(item.value)"
+                [attr.aria-pressed]="isActiveOrder(item.value)"
+                class="inline-flex items-center gap-1 transition hover:text-gray-900 hover:cursor-pointer">
+                {{ item.label }}
+                <span class="inline-block w-3 text-center" [class.invisible]="!isActiveOrder(item.value)">{{
+                    getBudgetOrderDirectionLabel(item.value) }}</span>
+                <span class="sr-only">
+                    @if (isActiveOrder(item.value)) {
+                    ordenado {{ currentBudgetOrderDirection === 'asc' ? 'ascendente' : 'descendente' }} por {{ item.label.toLowerCase() }}
+                    } @else {
+                    ordenar por {{ item.label.toLowerCase() }}
+                    }
+                </span>
+            </button>
+            }
+        </div>
+        
 
 
     </div>
@@ -48,7 +59,9 @@
     <div class="space-y-4">
         @if (budgetService.budgetArray.length > 0) {
         @for (budget of budgetService.budgetArray; track budget.createdAt) {
-        <app-budget-item [budget]="budget"></app-budget-item>
+            <a [routerLink]="['/budget', budget.createdAt]" class="hover:cursor-pointer">
+                <app-budget-item [budget]="budget"></app-budget-item>
+            </a>
         }
         } @else {
         <p class="text-gray-500 text-center py-10">No hay presupuestos en curso.</p>
