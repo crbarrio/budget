@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { Modal } from '../components/shared/modal/modal';
-import { ModalData } from '../interfaces/modal.interface';
+import { Alert } from '../components/shared/alert/alert';
+import { ModalAlertData } from '../interfaces/modal.interface';
 import { Dialog } from '@angular/cdk/dialog';
 
 @Injectable({
@@ -11,8 +11,8 @@ export class ModalService {
 
   private dialog = inject(Dialog);
 
-  openModal(data: ModalData) {
-    return this.dialog.open(Modal, {
+  openAlertModal(data: ModalAlertData) {
+    return this.dialog.open(Alert, {
       data
     });
   }

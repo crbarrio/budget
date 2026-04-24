@@ -3,8 +3,11 @@
 @import 'tailwindcss';
 
 @layer components {
+    .button-primary {
+        @apply rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-white transition hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2;
+    }
     .card {
-        @apply mx-2 md:mx-0 mt-4 px-4 py-6 rounded-xl border-2 border-transparent bg-white shadow-lg;
+        @apply mx-2 md:mx-0 mt-4 px-4 py-8 rounded-xl border-2 border-transparent bg-white shadow-lg;
     }
 
     .card-header {
@@ -17,5 +20,9 @@
 
     .form-input-invalid {
         @apply w-full rounded-lg border border-red-500 bg-red-50 px-3 py-2 text-red-800 placeholder-red-600 focus:outline-none focus:border-red-600 focus:ring-4 focus:ring-red-500/15;
+    }
+
+    .section {
+        @apply max-w-4xl mx-auto mt-10;
     }
 }

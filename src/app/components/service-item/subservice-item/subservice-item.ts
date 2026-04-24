@@ -2,6 +2,8 @@ import { Component, inject, input, output } from '@angular/core';
 import { ServiceElement } from '../../../interfaces/service.interface';
 import { ModalService } from '../../../services/modal.service';
 
+import { servicesPageText } from '../../../text/text';
+
 @Component({
   selector: 'app-subservice-item',
   imports: [],
@@ -9,6 +11,7 @@ import { ModalService } from '../../../services/modal.service';
   styleUrl: './subservice-item.css',
 })
 export class SubserviceItem {
+  readonly servicesPageText = servicesPageText;
   subservice = input.required<ServiceElement>();
   quantity = input.required<number>();
   quantityChanged = output<number>();

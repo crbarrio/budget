@@ -1,8 +1,16 @@
 <form class="grid gap-3 sm:grid-cols-2 md:grid-cols-4" (submit)="onSubmit($event)" novalidate>
     <div>
-        <input type="text" placeholder="Nombre" [class.form-input-invalid]="isFieldInvalid('name')" class="form-input" [formField]="budgetForm.name" />
+        <label for="budget-name" class="sr-only">{{ servicesPageText.budgetForm.name }}</label>
+        <input id="budget-name" 
+            type="text" 
+            placeholder="{{ servicesPageText.budgetForm.name }}" 
+            autocomplete="name" 
+            [attr.aria-invalid]="isFieldInvalid('name')"
+            [attr.aria-describedby]="isFieldInvalid('name') ? 'budget-name-error' : null"
+            [class.form-input-invalid]="isFieldInvalid('name')" class="form-input" 
+            [formField]="budgetForm.name" />
         @if ( isFieldInvalid('name')) {
-            <p class="text-red-500 text-sm">
+            <p id="budget-name-error" class="text-red-500 text-sm" role="alert">
                 @for (error of budgetForm.name().errors(); track $index) {
                     {{ error.message }}
                 }
@@ -11,9 +19,18 @@
     </div>
     
     <div>
-        <input type="text" placeholder="Teléfono" [class.form-input-invalid]="isFieldInvalid('telephone')" class="form-input" [formField]="budgetForm.telephone"/>
+        <label for="budget-telephone" class="sr-only">{{ servicesPageText.budgetForm.telephone }}</label>
+        <input id="budget-telephone" 
+            type="tel" 
+            placeholder="{{ servicesPageText.budgetForm.telephone }}" 
+            autocomplete="tel" 
+            [attr.aria-invalid]="isFieldInvalid('telephone')"
+            [attr.aria-describedby]="isFieldInvalid('telephone') ? 'budget-telephone-error' : null"
+            [class.form-input-invalid]="isFieldInvalid('telephone')" 
+            class="form-input" 
+            [formField]="budgetForm.telephone"/>
         @if ( isFieldInvalid('telephone')) {
-            <p class="text-red-500 text-sm">
+            <p id="budget-telephone-error" class="text-red-500 text-sm" role="alert">
                 @for (error of budgetForm.telephone().errors(); track $index) {
                     {{ error.message }}
                 }
@@ -22,9 +39,18 @@
     </div>
 
     <div>
-        <input type="text" placeholder="Email" [class.form-input-invalid]="isFieldInvalid('email')" class="form-input" [formField]="budgetForm.email"/>
+        <label for="budget-email" class="sr-only">{{ servicesPageText.budgetForm.email }}</label>
+        <input id="budget-email" 
+            type="email" 
+            placeholder="{{ servicesPageText.budgetForm.email }}" 
+            autocomplete="email" 
+            [attr.aria-invalid]="isFieldInvalid('email')"
+            [attr.aria-describedby]="isFieldInvalid('email') ? 'budget-email-error' : null"
+            [class.form-input-invalid]="isFieldInvalid('email')" 
+            class="form-input" 
+            [formField]="budgetForm.email"/>
         @if ( isFieldInvalid('email')) {
-            <p class="text-red-500 text-sm">
+            <p id="budget-email-error" class="text-red-500 text-sm" role="alert">
                 @for (error of budgetForm.email().errors(); track $index) {
                     {{ error.message }}
                 }
@@ -32,9 +58,9 @@
         }
     </div>
     <div>
-        <button class="bg-emerald-500 text-white rounded-lg px-4 py-2 hover:bg-emerald-600 transition w-full">
-            Solicitar presupuesto →
+        <button type="submit" class="button-primary w-full">
+            {{ servicesPageText.budgetForm.submitButton }}
         </button>
     </div>
     
-</form>
+</form>     

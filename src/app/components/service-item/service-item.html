@@ -21,7 +21,10 @@
                     name="service-{{ service().id }}" 
                     id="service-{{ service().id }}"
                     class="peer sr-only"
+                  [checked]="checked()"
                     (change)="onChangeService($event)"
+                  [attr.aria-expanded]="service().subservices ? checked() : null"
+                    [attr.aria-controls]="service().subservices ? 'subservices-' + service().id : null"
                  />
                 <span
                     class="h-5 w-5 rounded border border-gray-300 bg-white peer-checked:border-emerald-500 peer-checked:bg-emerald-500"></span>
@@ -30,21 +33,33 @@
                     <path d="M4 10l4 4 8-8" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </span>
-            <span class="ml-3 font-bold">Añadir</span>
+            <span class="ml-3 font-bold">{{ servicesPageText.addServiceCheckbox }}</span>
         </label>
     </div>
 
 </div>
 
-@if ( service().subservices ) {
-<div class="mt-8 space-y-2 text-sm" [class.hidden]="!isSelected()">
-
-    @for (subservice of service().subservices; track subservice.id) {
-        <app-subservice-item 
-            [subservice]="subservice" [quantity]="subserviceQuantities[subservice.id] ?? 1"
+@if (service().subservices && checked()) {
+  <div
+    id="subservices-{{ service().id }}"
+    class="grid overflow-hidden text-sm transition-all duration-300 ease-out"
+    [class.grid-rows-[1fr]]="checked()"
+    [class.grid-rows-[0fr]]="!checked()"
+    [class.opacity-100]="checked()"
+    [class.opacity-0]="!checked()"
+    [class.pointer-events-none]="!checked()"
+  >
+    <div class="min-h-0">
+      <div class="space-y-2 pt-8">
+        @for (subservice of service().subservices; track subservice.id) {
+          <app-subservice-item
+            [subservice]="subservice"
+            [quantity]="subserviceQuantities()[subservice.id] ?? 1"
             (quantityChanged)="updateSubservice(subservice.id, $event)"
-        ></app-subservice-item>
-    }
-    
-</div>
+          ></app-subservice-item>
+        }
+      </div>
+    </div>
+  </div>
+
 }
