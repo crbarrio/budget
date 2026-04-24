@@ -2,6 +2,8 @@ import { Component, input, output, signal } from '@angular/core';
 import type { ServiceElement } from "../../interfaces/service.interface";
 import { SubserviceItem } from "./subservice-item/subservice-item";
 
+import { servicesPageText } from '../../text/text';
+
 @Component({
   selector: 'app-service-item',
   imports: [SubserviceItem],
@@ -9,6 +11,7 @@ import { SubserviceItem } from "./subservice-item/subservice-item";
 })
 export class ServiceItem {
 
+  readonly servicesPageText = servicesPageText;
   service = input.required<ServiceElement>();
   isSelected = signal(false);
   subserviceQuantities: Record<number, number | undefined> = {};

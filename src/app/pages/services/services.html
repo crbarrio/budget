@@ -7,7 +7,7 @@
     </app-card>
     }
     <div class="text-right mt-6">
-        <span class="mr-5 card-header">Preu pressupostat:</span>
+        <span class="mr-5 card-header">{{ servicesPageText.budgetTotalLabel }}</span>
         <span class="text-3xl font-extrabold sm:text-4xl" aria-live="polite">{{ total() }}</span>
         <span class="text-lg font-bold sm:text-xl"> €</span>
     </div>
@@ -15,7 +15,7 @@
 
 <section class="section">
     <app-card>
-        <h3 class="card-header">Solicitar presupuesto</h3>
+        <h3 class="card-header">{{ servicesPageText.budgetformHeader }}</h3>
         <app-budget-form (formSubmited)="buildBudget($event)"></app-budget-form>
     </app-card>
 </section>
@@ -23,7 +23,7 @@
 <hr class="section mt-10 text-gray-300 border border-dashed">
 
 <section class="section mb-10">
-    <h3 class="card-header">Presupuestos en curso:</h3>
+    <h3 class="card-header">{{ servicesPageText.budgetListHeader }}</h3>
     <div class="flex items-center justify-end gap-5 text-sm font-semibold text-gray-500 mr-4 mb-4">
         <button type="button" class="text-gray-500 transition hover:text-gray-900 hover:cursor-pointer"
             aria-label="Buscar">
@@ -64,7 +64,7 @@
             </a>
         }
         } @else {
-        <p class="text-gray-500 text-center py-10">No hay presupuestos en curso.</p>
+        <p class="text-gray-500 text-center py-10">{{ servicesPageText.budgetListEmpty }}</p>
         }
     </div>
 </section>

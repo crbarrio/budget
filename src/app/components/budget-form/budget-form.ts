@@ -2,6 +2,7 @@ import { Component, output, signal,  } from '@angular/core';
 import { email, form, FormField, required, submit, validate } from '@angular/forms/signals';
 import { BudgetFormData } from '../../interfaces/budget-form.interface';
 
+import { servicesPageText } from '../../text/text';
 
 
 @Component({
@@ -10,6 +11,8 @@ import { BudgetFormData } from '../../interfaces/budget-form.interface';
   templateUrl: './budget-form.html',
 })
 export class BudgetForm {
+
+  readonly servicesPageText = servicesPageText;
 
   budgetModel = signal<BudgetFormData>({
     name: '',

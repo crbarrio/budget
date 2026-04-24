@@ -8,7 +8,7 @@ import { Budget, BudgetOrderBy, BudgetOrderDirection } from '../../interfaces/bu
 
 import { SelectedService } from '../../interfaces/service.interface';
 import { BudgetService } from '../../services/budget.service';
-import { modalAlertContent as modalCatalog, services } from '../../text/text';
+import { modalAlertContent as modalCatalog, services, servicesPageText } from '../../text/text';
 import { ModalService } from '../../services/modal.service';
 import { HeroHeader } from "../../components/hero-header/hero-header";
 import { RouterLink } from '@angular/router';
@@ -21,6 +21,7 @@ import { RouterLink } from '@angular/router';
 export default class Services {
   readonly services = services;
   readonly modalAlertContent = modalCatalog;
+  readonly servicesPageText = servicesPageText; 
   budgetService = inject(BudgetService);
   readonly defaultBudgetOrderDirections: Record<BudgetOrderBy, BudgetOrderDirection> = {
     date: 'desc',

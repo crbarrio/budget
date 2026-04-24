@@ -1,9 +1,9 @@
 <form class="grid gap-3 sm:grid-cols-2 md:grid-cols-4" (submit)="onSubmit($event)" novalidate>
     <div>
-        <label for="budget-name" class="sr-only">Nombre</label>
+        <label for="budget-name" class="sr-only">{{ servicesPageText.budgetForm.name }}</label>
         <input id="budget-name" 
             type="text" 
-            placeholder="Nombre" 
+            placeholder="{{ servicesPageText.budgetForm.name }}" 
             autocomplete="name" 
             [attr.aria-invalid]="isFieldInvalid('name')"
             [attr.aria-describedby]="isFieldInvalid('name') ? 'budget-name-error' : null"
@@ -19,10 +19,10 @@
     </div>
     
     <div>
-        <label for="budget-telephone" class="sr-only">Teléfono</label>
+        <label for="budget-telephone" class="sr-only">{{ servicesPageText.budgetForm.telephone }}</label>
         <input id="budget-telephone" 
             type="tel" 
-            placeholder="Teléfono" 
+            placeholder="{{ servicesPageText.budgetForm.telephone }}" 
             autocomplete="tel" 
             [attr.aria-invalid]="isFieldInvalid('telephone')"
             [attr.aria-describedby]="isFieldInvalid('telephone') ? 'budget-telephone-error' : null"
@@ -39,10 +39,10 @@
     </div>
 
     <div>
-        <label for="budget-email" class="sr-only">Email</label>
+        <label for="budget-email" class="sr-only">{{ servicesPageText.budgetForm.email }}</label>
         <input id="budget-email" 
             type="email" 
-            placeholder="Email" 
+            placeholder="{{ servicesPageText.budgetForm.email }}" 
             autocomplete="email" 
             [attr.aria-invalid]="isFieldInvalid('email')"
             [attr.aria-describedby]="isFieldInvalid('email') ? 'budget-email-error' : null"
@@ -59,7 +59,7 @@
     </div>
     <div>
         <button type="submit" class="button-primary w-full">
-            Solicitar presupuesto →
+            {{ servicesPageText.budgetForm.submitButton }}
         </button>
     </div>
     

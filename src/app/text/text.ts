@@ -1,6 +1,32 @@
 import { ServiceElement } from '../interfaces/service.interface';
 
 
+export const commonText = {
+    navbar: {
+        siteName: 'Frontender IT Academy'
+    }
+} as const;
+
+export const homePageText = {
+    heroHeader: 'Consigue la mejor calidad'
+} as const;
+
+export const servicesPageText = {
+    addServiceCheckbox: 'Añadir',
+    addSubserviceButton: 'Disminuir cantidad',
+    decreaseSubserviceButton: 'Disminuir cantidad',
+    budgetTotalLabel: 'Precio presupuestado',
+    budgetformHeader: 'Solicitar presupuesto',
+    budgetListHeader: 'Presupuestos en curso:',
+    budgetListEmpty: 'No hay presupuestos en curso.',
+    budgetForm: {
+        name: 'Nombre',
+        email: 'Email',
+        telephone: 'Telephone',
+        submitButton: 'Solicitar presupuesto →'
+    }
+
+} as const;
 
 export const services: ServiceElement[] = [
     {
