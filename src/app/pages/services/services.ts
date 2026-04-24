@@ -57,7 +57,9 @@ export default class Services {
     }, 0));
   }
 
-  toggleService(serviceChange: { id: number; checked: boolean; subservices: { id: number; quantity: number }[] }) {
+  toggleService(serviceChange: { id: number; checked: boolean }) {
+    const currentSelection = this.selectedServices.find((service) => service.id === serviceChange.id);
+
     if (serviceChange.checked) {
       const service = this.services.find(service => service.id === serviceChange.id);
 
@@ -71,7 +73,7 @@ export default class Services {
           price: service.price,
           subservices: service.subservices?.map(sub => ({
             id: sub.id,
-            quantity: serviceChange.subservices.find(s => s.id === sub.id)?.quantity ?? 1,
+            quantity: currentSelection?.subservices?.find(item => item.id === sub.id)?.quantity ?? 1,
             price: sub.price
           }))
         });
@@ -83,6 +85,46 @@ export default class Services {
     }
 
     this.recalculateTotal();
+  }
+
+  updateSubserviceQuantity(serviceChange: { serviceId: number; subserviceId: number; change: number }) {
+    this.selectedServices = this.selectedServices.map((service) => {
+      if (service.id !== serviceChange.serviceId) {
+        return service;
+      }
+
+      return {
+        ...service,
+        subservices: service.subservices?.map((subservice) => {
+          if (subservice.id !== serviceChange.subserviceId) {
+            return subservice;
+          }
+
+          return {
+            ...subservice,
+            quantity: Math.max(1, subservice.quantity + serviceChange.change),
+          };
+        }),
+      };
+    });
+
+    this.recalculateTotal();
+  }
+
+  isServiceSelected(serviceId: number) {
+    return this.selectedServices.some((service) => service.id === serviceId);
+  }
+
+  getSubserviceQuantities(serviceId: number) {
+    const selectedService = this.selectedServices.find((service) => service.id === serviceId);
+
+    if (!selectedService?.subservices) {
+      return {};
+    }
+
+    return Object.fromEntries(
+      selectedService.subservices.map((subservice) => [subservice.id, subservice.quantity])
+    );
   }
 
   orderBudgets(orderBy: BudgetOrderBy) {
@@ -109,6 +151,12 @@ export default class Services {
 
   private getNextBudgetOrderDirection(direction: BudgetOrderDirection): BudgetOrderDirection {
     return direction === 'asc' ? 'desc' : 'asc';
+  }
+
+  private resetBudgetBuilder() {
+    this.selectedServices = [];
+    this.recalculateTotal();
+    this.budgetForm()?.onReset();
   }
 
   async buildBudget(formData: { name: string; telephone: string; email: string }) {
@@ -144,9 +192,7 @@ export default class Services {
       await this.budgetService.saveBudget(budget);
       
       this.modalService.openAlertModal(this.modalAlertContent.budgetSavedSuccess);
-      this.selectedServices = [];
-      this.recalculateTotal();
-      this.budgetForm()?.onReset();
+      this.resetBudgetBuilder();
     } catch (error) {
 
       this.modalService.openAlertModal(this.modalAlertContent.budgetSavedError);

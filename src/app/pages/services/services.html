@@ -2,7 +2,12 @@
 <section class="section">
     @for (service of services; track service.id) {
     <app-card>
-        <app-service-item [service]="service" (serviceToggled)="toggleService($event)">
+        <app-service-item
+            [service]="service"
+            [checked]="isServiceSelected(service.id)"
+            [subserviceQuantities]="getSubserviceQuantities(service.id)"
+            (serviceToggled)="toggleService($event)"
+            (subserviceQuantityChanged)="updateSubserviceQuantity($event)">
         </app-service-item>
     </app-card>
     }
