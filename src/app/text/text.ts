@@ -28,34 +28,73 @@ export const servicesPageText = {
 
 } as const;
 
+export const budgetDetailsPageText = {
+    header: 'Detalles del presupuesto',
+    backButton: 'Volver',
+    printButton: 'Imprimir',
+    budgetStateLabel: 'Estado',
+    budgetStates: {
+        pending: {
+            label: 'Pendiente',
+            color: 'bg-yellow-100 text-yellow-800'
+        },
+        accepted: {
+            label: 'Aceptado',
+            color: 'bg-green-100 text-green-800'
+        },
+        rejected: {
+            label: 'Rechazado',
+            color: 'bg-red-100 text-red-800'
+        }
+    },
+    clientDetails: {
+        name: 'Nombre',
+        email: 'Email',
+        telephone: 'Teléfono',
+        date: 'Fecha de solicitud'
+    },
+    tableHeaders: {
+        service: 'Servicio',
+        description: 'Descripción',
+        price: 'Precio',
+        quantity: 'Cantidad',
+        subtotal: 'Subtotal'
+    }
+} as const;
+
 export const services: ServiceElement[] = [
     {
         id: 1,
         name: "Seo",
+        initialQuantity: 1,
         description: "Optimización de motores de búsqueda para mejorar la visibilidad en línea",
         price: 300
     },
     {
         id: 2,
         name: "Ads",
+        initialQuantity: 1,
         description: "Publicidad en línea para aumentar la visibilidad y las conversiones",
         price: 400
     },
     {
         id: 3,
         name: "Web",
+        initialQuantity: 1,
         description: "Desarrollo de sitios web completos y responsivos ",
         price: 500,
         subservices: [
             {
                 id: 1,
-                name: "Numero de Páginas",
+                name: "Páginas",
+                initialQuantity: 1,
                 description: "Añade el número de páginas que deseas para tu sitio web. Cada página adicional tiene un costo de 30€.",
                 price: 30
             },
             {
                 id: 2,
-                name: "Numero de Idiomas",
+                name: "Idiomas",
+                initialQuantity: 1,
                 description: " Añade el número de idiomas que deseas para tu sitio web. Cada idioma adicional tiene un costo de 30€.",
                 price: 30
             }

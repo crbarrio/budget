@@ -31,6 +31,8 @@ export default class Services {
   currentBudgetOrderBy: BudgetOrderBy = 'date';
   currentBudgetOrderDirection: BudgetOrderDirection = 'desc';
 
+  heroHeaderText = servicesPageText.budgetformHeader;
+
   budgetsListOrderOptions: { value: BudgetOrderBy; label: string }[] = [
     { value: 'date', label: 'Fecha' },
     { value: 'name', label: 'Nombre' },
@@ -141,8 +143,8 @@ export default class Services {
     if (this.currentBudgetOrderBy !== orderBy) {
       return '';
     }
-
-    return this.currentBudgetOrderDirection === 'asc' ? '↑' : '↓';
+    // Material Icons: 'arrow_upward' for asc, 'arrow_downward' for desc
+    return this.currentBudgetOrderDirection === 'asc' ? 'arrow_upward' : 'arrow_downward';
   }
 
   isActiveOrder(orderBy: BudgetOrderBy) {
@@ -175,10 +177,13 @@ export default class Services {
         return {
           id: service.id,
           name: service.name,
+          description: service.description,
           price: service.price,
+          quantity: service.initialQuantity,
           subservices: service.subservices?.map((sub) => ({
             id: sub.id,
             name: sub.name,
+            description: sub.description,
             price: sub.price,
             quantity:
               selected.subservices?.find((item) => item.id === sub.id)?.quantity ?? 1,

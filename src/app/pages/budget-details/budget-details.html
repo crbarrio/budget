@@ -1,7 +1,117 @@
+<app-hero-header [heroHeaderText]="heroHeaderText"></app-hero-header>
+<section class="section mb-10" #pdfContent>
+    <app-card>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+            <div>
+                <p class="text-sm font-bold text-gray-900">{{ budgetDetailsPageText.clientDetails.name }}:</p>
+                <p class="text-sm text-gray-600">{{ budget()?.name }}</p>
+            </div>
+            <div>
+                <p class="text-sm font-bold text-gray-900">{{ budgetDetailsPageText.clientDetails.email }}:</p>
+                <p class="text-sm text-gray-600">{{ budget()?.email }}</p>
+            </div>
+            <div>
+                <p class="text-sm font-bold text-gray-900">{{ budgetDetailsPageText.clientDetails.telephone }}:</p>
+                <p class="text-sm text-gray-600">{{ budget()?.telephone }}</p>
+            </div>
+            <div>
+                <p class="text-sm font-bold text-gray-900">{{ budgetDetailsPageText.clientDetails.date }}:</p>
+                <p class="text-sm text-gray-600">{{ budget()!.createdAt | date:'d/M/yyyy' }}</p>
+            </div>
+        </div>
 
-<section class="section mb-10">
-    <app-budget-item [budget]="budget()"></app-budget-item>
-    <button [routerLink]="['/home']" class="mt-6 button-primary">
-        Volver
+        <div class="flex flex-wrap items-center justify-between gap-4 border-t border-gray-100 pt-6">
+            <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-gray-900">{{ budgetDetailsPageText.budgetStateLabel }}:</span>
+                <span class="px-3 py-1 {{ budgetDetailsPageText.budgetStates.pending.color }} text-xs font-semibold rounded-md">{{ budgetDetailsPageText.budgetStates.pending.label }}</span>
+            </div>
+            <div class="flex flex-wrap gap-2 print:hidden"><button
+                    onclick="window.print()"
+                    class="button-primary flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[18px]">print</span>
+                    {{ budgetDetailsPageText.printButton }}
+                </button>
+            </div>
+        </div>
+    </app-card>
+</section>
+
+<section class="section">
+    <app-card>
+        <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse table-auto">
+            <thead>
+                <tr class="bg-white border-b border-gray-100">
+                    <th class="p-6 text-xs font-bold text-gray-500 uppercase">
+                        {{ budgetDetailsPageText.tableHeaders.service }}</th>
+                    <th class="p-6 max-w-2 text-xs font-bold text-gray-500 uppercase">{{ budgetDetailsPageText.tableHeaders.description }}
+                    </th>
+                    <th class="p-6 text-xs font-bold text-gray-500 uppercase text-right">{{ budgetDetailsPageText.tableHeaders.price }}
+                    </th>
+                    <th class="p-6 text-xs font-bold text-gray-500 uppercase text-center">{{ budgetDetailsPageText.tableHeaders.quantity }}
+                    </th>
+                    <th
+                        class="p-6 text-xs font-bold text-gray-500 uppercase text-right">
+                        {{ budgetDetailsPageText.tableHeaders.subtotal }}</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                <!-- Row: SEO -->
+                @for (service of budget()?.services; track service.id) {
+                    <tr>
+                        <td class="p-6 align-top">
+                            <span class="text-sm font-bold text-gray-900">{{ service.name }}</span>
+                        </td>
+                        <td class="p-6 align-top">
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                {{ service.description }}
+                            </p>
+                        </td>
+                        <td class="p-6 align-top text-right">
+                            <span class="text-xl font-extrabold text-gray-900 text-nowrap"> {{ service.price }} €</span>
+                        </td>
+                        <td class="p-6 align-top text-center">
+                            <span class="text-xl font-extrabold text-gray-900 text-nowrap">{{ service.quantity }}</span>
+                        </td>
+                        <td class="p-6 align-top text-right">
+                            <span class="text-xl font-extrabold text-gray-900 text-nowrap"> {{ service.price * service.quantity }} €</span>
+                        </td>
+                    </tr>
+                    @if (service.subservices) {
+                        @for (subservice of service.subservices; track subservice.id) {
+                            <tr>
+                                <td></td>
+                                <td class="px-6 py-3 align-top">
+                                    <span class="text-sm text-gray-600">{{ subservice.name }}</span>
+                                </td>
+                                <td class="px-6 py-3 align-top text-right">
+                                    <span class="text-sm text-gray-600 text-nowrap">{{ subservice.price }} €</span>
+                                </td>
+                                <td class="px-6 py-3 align-top text-center">
+                                    <span class="text-sm text-gray-600 text-nowrap">{{ subservice.quantity }}</span>
+                                </td>
+                                <td class="px-6 py-3 align-top text-right">
+                                    <span class="text-sm text-gray-600 text-nowrap">{{ subservice.price * subservice.quantity }} €</span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+        </div>
+    </app-card>
+</section>
+
+<section class="section">
+    <app-card>
+        <div
+            class=" flex items-center justify-between">
+            <h2 class="text-2xl font-extrabold text-gray-900">Total</h2>
+            <span class="text-right text-3xl md:text-4xl font-extrabold text-gray-900 align-middle ml-2">{{ budget()?.total }} €</span>
+        </div>
+    </app-card>
+    <button [routerLink]="['/home']" class="my-6 button-primary print:hidden">
+        {{ budgetDetailsPageText.backButton }}
     </button>
 </section>

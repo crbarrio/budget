@@ -20,6 +20,8 @@ interface Service {
     id: number;
     price: number;
     name: string;
+    description: string;
+    quantity: number;
     subservices?: Subservice[];
 }
 
@@ -28,4 +30,5 @@ interface Subservice {
     quantity: number;
     price: number;
     name: string;
+    description: string;
 }

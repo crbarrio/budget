@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { homePageText } from '../../text/text';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-hero-header',
@@ -8,5 +7,5 @@ import { homePageText } from '../../text/text';
   styleUrl: './hero-header.css',
 })
 export class HeroHeader {
-  readonly homePageText = homePageText;
+  heroHeaderText = input.required<string>();
 }

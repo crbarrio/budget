@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { HeroHeader } from '../../components/hero-header/hero-header';
+import { Component, input } from '@angular/core';
 import { Navbar } from "../../components/navbar/navbar";
 import { RouterOutlet } from "@angular/router";
 
@@ -11,5 +10,4 @@ import { RouterOutlet } from "@angular/router";
 })
 
 export default class Home {
-
 }

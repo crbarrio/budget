@@ -2,17 +2,22 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs/internal/operators/map';
-import { BudgetItem } from "../../components/budget-item/budget-item";
 import { BudgetService } from '../../services/budget.service';
+import { Card } from "../../components/shared/card/card";
+import { HeroHeader } from "../../components/hero-header/hero-header";
+import { budgetDetailsPageText } from '../../text/text';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-budget-details',
-  imports: [BudgetItem, RouterLink],
+  imports: [RouterLink, Card, HeroHeader, DatePipe],
   templateUrl: './budget-details.html',
 })
 export default class BudgetDetails {
 
+  readonly budgetDetailsPageText = budgetDetailsPageText;
 
+  heroHeaderText = this.budgetDetailsPageText.header;
   budgetService = inject(BudgetService);
 
   budgetId = toSignal<string>(

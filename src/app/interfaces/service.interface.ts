@@ -9,6 +9,7 @@ export interface ServiceElement {
     name:         string;
     description:  string;
     price:        number;
+    initialQuantity: number;
     subservices?: ServiceElement[];
 }
 
