@@ -13,6 +13,7 @@ describe('SubserviceItem', () => {
     name: 'Páginas',
     description: 'Número de páginas',
     price: 30,
+    initialQuantity: 0,
   };
 
   beforeEach(async () => {

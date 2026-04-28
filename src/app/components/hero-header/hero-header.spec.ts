@@ -13,7 +13,8 @@ describe('HeroHeader', () => {
 
     fixture = TestBed.createComponent(HeroHeader);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+    fixture.componentRef.setInput('heroHeaderText', 'Presupuesto digital');
+    fixture.detectChanges();
   });
 
   it('should create', () => {

@@ -12,18 +12,21 @@ describe('ServiceItem', () => {
     "name": "Web",
     "description": "Desarrollo de sitios web completos y responsivos ",
     "price": 500,
+    "initialQuantity": 1,
     "subservices": [
       {
         "id": 1,
         "name": "Páginas",
         "description": "Número de páginas",
-        "price": 30
+        "price": 30,
+        "initialQuantity": 1
       },
       {
         "id": 2,
         "name": "Idiomas",
         "description": "Número de idiomas",
-        "price": 30
+        "price": 30,
+        "initialQuantity": 1
       }
     ]
   };
